@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}</title>
+</head>
+<body>
+    {% for post in userpostspage %}
+    <br>{{ post.title }}
+    <br>{{ post.content }}
+    <br>{{ post.datetime }}
+    <br>{{ post.author }}
+    <br>
+    <br>
+    {% endfor %}
+</body>
+</html>
+
+<div>
+  <span>
+    {% if userpostspage.has_previous %}
+      <a href="?pgnum={{ userpostspage.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>
+      Page {{ userpostspage.number }} of {{ userpostspage.paginator.num_pages }}.
+    </span>
+    {% if userpostspage.has_next %}
+      <a href="?pgnum={{ userpostspage.next_page_number }}">Next</a>
+    {% endif %}
+  </span>
+</div>

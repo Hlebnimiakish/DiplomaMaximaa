@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ thepost.title }}</title>
+</head>
+<body>
+    <br>{{ thepost.title }}
+    <br>{{ thepost.content }}
+    <br>{{ thepost.datetime }}
+    <br>{{ thepost.author }}
+        {% for com in postcomments %}
+        <br>{{ com.content }}
+        {% endfor %}
+</body>
+</html>
