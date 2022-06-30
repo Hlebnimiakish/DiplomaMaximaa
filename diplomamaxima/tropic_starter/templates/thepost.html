@@ -1,16 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ thepost.title }}</title>
-</head>
-<body>
-    <br>{{ thepost.title }}
-    <br>{{ thepost.content }}
-    <br>{{ thepost.datetime }}
-    <br>{{ thepost.author }}
-        {% for com in postcomments %}
-        <br>{{ com.content }}
-        {% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head_title %}
+    <title>Post: {{ thepost.title }}</title>
+{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="wholepost">
+            <div class="posttitle"><a href="/post/{{ thepost.id }}">{{ thepost.title }}</a></div>
+            <div class="postcontent">{{ thepost.content }}</div>
+            <div class="postauthor">Post from: <a href="/userpage/{{ thepost.author.id }}">{{ thepost.author}}</a></div>
+            <div class="postdatetime">Posted on: {{ thepost.datetime }}</div>
+        </div>
+        <div class="commentsstart">Comments</div>
+          {% for com in postcomments %}
+            <div class="comment">
+                <div class="commentcontent">{{ com.content }}</div>
+                <div class="commentauthor">Comment from: <a href="/userpage/{{ com.author.id }}">{{ com.author }}</a></div>
+            </div>
+          {% endfor %}
+        <br>
+    </section>
+    <hr>
+    <section>
+    <form class="commentform" action="" method="post">
+        {% csrf_token %}
+        {{ commentform.as_p }}
+        <input class="submitcommentbutton" type="submit" value="Add a comment!">
+    </form>
+    </section>
+{% endblock %}

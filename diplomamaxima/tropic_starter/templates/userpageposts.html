@@ -1,22 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ user.username }}</title>
-</head>
-<body>
-    {% for post in userpostspage %}
-    <br>{{ post.title }}
-    <br>{{ post.content }}
-    <br>{{ post.datetime }}
-    <br>{{ post.author }}
-    <br>
-    <br>
-    {% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
 
-<div>
+{% block head_title %}
+    <title>Page of {{ user.username }}</title>
+{% endblock %}
+
+
+{% block body %}
+
+<section>
+    {% for post in userpostspage %}
+    <div class="wholepost">
+        <div class="posttitle"><a href="/post/{{ post.id }}">{{ post.title }}</a></div>
+        <div class="postcontent">{{ post.content }}</div>
+        <div class="postauthor">Post from: <a href="/userpage/{{ post.author.id }}">{{ post.author}}</a></div>
+        <div class="postdatetime">Posted on: {{ post.datetime }}</div>
+        <hr>
+        <br>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination">
   <span>
     {% if userpostspage.has_previous %}
       <a href="?pgnum={{ userpostspage.previous_page_number }}">Previous</a>
@@ -29,3 +36,4 @@
     {% endif %}
   </span>
 </div>
+{% endblock %}

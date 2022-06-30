@@ -1,77 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-  {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-            {{ message }}
-        {% endfor %}
-    </ul>
-    {% endif %}
-</div>
-<head>
-    <style>
-    .alert {
-      padding: 20px;
-      background-color: #f44336; /* Red */
-      color: white;
-      margin-bottom: 15px;
-    }
-
-    .alert {
-      padding: 20px;
-      background-color: #f44336; /* Red */
-      color: white;
-      margin-bottom: 15px;
-    }
-
-
-    .closebtn {
-      margin-left: 15px;
-      color: white;
-      font-weight: bold;
-      float: right;
-      font-size: 22px;
-      line-height: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-
-    .closebtn:hover {
-      color: black;
-    }
-    </style>
-    <meta charset="UTF-8">
+{% block head_title %}
     <title>tropic_starter</title>
-</head>
-<body>
-    <h1>Hello world</h1>
-    {% for post in postspage %}
-        <br>{{ post.title }}
-        <br>{{ post.content}}
-        <br>{{ post.author}}
-        <br>{{ post.datetime}}
-    <br>
-    <br>
-    {% endfor %}
-</body>
-</html>
+{% endblock %}
 
-<div>
-  <span>
-    {% if postspage.has_previous %}
-      <a href="?pgnum={{ postspage.previous_page_number }}">Previous</a>
-    {% endif %}
-    <span>
-      Page {{ postspage.number }} of {{ postspage.paginator.num_pages }}.
-    </span>
-    {% if postspage.has_next %}
-      <a href="?pgnum={{ postspage.next_page_number }}">Next</a>
-    {% endif %}
-  </span>
-</div>
+
+
+{% block body %}
+{% load static %}
+
+<section class="homepagebutts">
+        <div><a href="/addpost/"><button class="addpostbutton">Add a post!</button></a></div>
+    <br>
+        <div><a href="/registration/"><button class="regbuttonH">Register</button></a></div>
+</section>
+
+<section>
+    {% for post in postspage %}
+        <div class="wholepost">
+            <div class="posttitle"><a class="posttitle" href="/post/{{ post.id }}">{{ post.title }}</a></div>
+            <div class="postcontent">{{ post.content}}</div>
+            <div class="postauthor">Post from: <a href="/userpage/{{ post.author.id }}">{{ post.author}}</a></div>
+            <div class="postdatetime">Posted on: {{ post.datetime}}</div>
+            <hr>
+            <br>
+        </div>
+    {% endfor %}
+</section>
+
+{% endblock %}
+
+{% block pagination %}
+    <div class="pagination">
+      <span>
+        {% if postspage.has_previous %}
+          <a href="?pgnum={{ postspage.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>
+          Page {{ postspage.number }} of {{ postspage.paginator.num_pages }}.
+        </span>
+        {% if postspage.has_next %}
+          <a href="?pgnum={{ postspage.next_page_number }}">Next</a>
+        {% endif %}
+      </span>
+    </div>
+{% endblock %}
+
+
 
 

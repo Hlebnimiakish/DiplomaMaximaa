@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
-</head>
-<body>
-    <form action="" method="post">
+{% extends 'base.html' %}
+
+{% block head_title %}
+    <title>Adding post</title>
+{% endblock %}
+
+{% block body %}
+    <form class="addpostform" action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="add a post!">
+        <input class="submitpostbutton" type="submit" value="Submit the post!">
     </form>
-</body>
-</html>
+{% endblock %}

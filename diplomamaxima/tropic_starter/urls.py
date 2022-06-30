@@ -7,6 +7,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='loginpage'),
     path('logout/', LogoutView.as_view(), name='logoutpage'),
     path('addpost/', AddPostView.as_view(), name='addpostpage'),
-    path('post/<int:id>', ThePostPageView.as_view(), name='thepostpage'),
+    path('post/<int:id>', ThePostPage_WithCommView.as_view(), name='thepostpage'),
     path('userpage/<int:id>/', UserPageView.as_view(), name='userpage'),
 ]

@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-</ul>
-{% endif %}
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="login">
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block head_title %}
+<title xmlns="http://www.w3.org/1999/html">Login</title>
+{% endblock %}
+
+{% block body %}
+    <div class="logpage">
+        <form class="loginform" action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="loginbutton" type="submit" value="login">
+        </form>
+        <span><a href="/registration/"><button class="regbuttonL">Register</button></a></span>
+    </div>
+{% endblock %}

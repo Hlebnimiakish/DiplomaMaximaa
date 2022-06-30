@@ -9,17 +9,16 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 
 
-
 class HomepageView(View):
     def get(self, request):
         posts = Post.objects.order_by('-datetime')
-        postspag = Paginator(posts, 10)
+        postspage = Paginator(posts, 10)
         pgnum = request.GET.get('pgnum')
         if pgnum is None:
-            postspage = postspag.get_page(1)
+            postspage = postspage.get_page(1)
             return render(request, 'homepage.html', {'postspage': postspage})
         else:
-            postspage = postspag.get_page(pgnum)
+            postspage = postspage.get_page(pgnum)
             return render(request, 'homepage.html', {'postspage': postspage})
 
 
@@ -39,7 +38,7 @@ class LoginView(View):
             user = TSUser.objects.get(email=email, password=password)
             login(request, user)
             messages.success(request, 'Logged in successfully')
-            return redirect(f'/userpage/{user.id}')
+            return redirect(request.GET.get('next') or f'/userpage/{user.id}')
         except ObjectDoesNotExist:
             messages.error(request, 'No such user. Please check the data given')
             return redirect('loginpage')
@@ -70,7 +69,6 @@ class RegistrationView(View):
 
 
 
-
 class LogoutView(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -83,7 +81,7 @@ class LogoutView(View):
 
 
 class AddPostView(LoginRequiredMixin, View):
-    login_url = '/login/' #что там с next?
+    login_url = '/login/'
     def get(self, request):
         postform = AddPostForm()
         return render(request, 'addpost.html', {'form': postform})
@@ -102,30 +100,50 @@ class AddPostView(LoginRequiredMixin, View):
             return redirect('addpostpage')
 
 
-class ThePostPageView(View):
+class ThePostPage_WithCommView(View):
     def get(self, request, id):
         thepost = Post.objects.get(id=id)
         postcomments = Comment.objects.filter(post_id=id).order_by('-id')
-        return render(request, 'thepost.html', {'thepost': thepost, 'postcomments': postcomments})
-
-
-class AddCommentView(LoginRequiredMixin, View):
-    login_url = '/login/'
-    def get(self, request):
-        commentform = AddCommentForm()
-        return render(request, 'thepost.html', {'addcomment': commentform})
-    def post(self, request):
-        commentform = AddCommentForm(request.POST)
-        if commentform.is_valid():
-            Comment.objects.create(
-                post = Post.objects.get(id=request.POST[Post.pk]),
-                author = TSUser.objects.get(id=request.user.id),
-                content = request.POST['content']
-            )
-            return redirect(f'post/{request.POST[Post.pk]}')
+        if request.user.is_authenticated:
+            commentform = AddCommentForm()
         else:
-            messages.error(request, "Something went wrong")
-            return redirect(f'post/{request.POST[Post.pk]}')
+            commentform = None
+        return render(request, 'thepost.html', {'thepost': thepost, 'postcomments': postcomments, 'commentform': commentform})
+    def post(self, request, id):
+        if request.user.is_authenticated:
+            commentform = AddCommentForm(request.POST)
+            if commentform.is_valid():
+                Comment.objects.create(
+                    post=Post.objects.get(id=id),
+                    author=TSUser.objects.get(id=request.user.id),
+                    content=request.POST['content']
+                )
+                return redirect(f'/post/{id}')
+            else:
+                messages.error(request, "Something went wrong")
+                return redirect(f'/post/{id}')
+        else:
+            messages.error(request, "U have to be logged in!")
+            return redirect('loginpage')
+
+
+# class AddCommentView(LoginRequiredMixin, View):
+#     login_url = '/login/'
+#     def get(self, request):
+#         commentform = AddCommentForm()
+#         return render(request, 'thepost.html', {'commentform': commentform})
+#     def post(self, request):
+#         commentform = AddCommentForm(request.POST)
+#         if commentform.is_valid():
+#             Comment.objects.create(
+#                 post = Post.objects.get(id=request.POST[Post.pk]),
+#                 author = TSUser.objects.get(id=request.user.id),
+#                 content = request.POST['content']
+#             )
+#             return redirect(f'/post/{request.POST[Post.pk]}')
+#         else:
+#             messages.error(request, "Something went wrong")
+#             return redirect(f'/post/{request.POST[Post.pk]}')
 
 
 

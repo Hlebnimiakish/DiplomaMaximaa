@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <meta charset="UTF-8">
+    {% block head_title %}
+    {% endblock %}
+</head>
+
+<div class="message" onclick="style.display='none'">
   {% if messages %}
-        <ul class="messages">
         {% for message in messages %}
-            {{ message }}
+            <div class="message{{ message.tags }}">{{ message }}
+            <div class="liltext">Click on to close</div>
+            </div>
         {% endfor %}
-    </ul>
     {% endif %}
 </div>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
+
+<body class="body">
     <header>
         <nav>
-            <ul>
-                <li>Tropic_starter</li>
-                <li>User</li>
-            </ul>
+            <span><a href="/"><img class="logo" src="{% static 'pics/logo2.png' %}"></a></span>
+            <span class="iconwithcont">
+                <img class="usericon" src="{% static 'pics/sunbathing.png' %}">
+                <div class="usericoncont">
+                {% if user.id == null %}
+                 <a class="loginlogo" href="/login/">login</a>
+                {% else %}
+                <a class="userplogo" href="/userpage/{{ user.id }}">your page</a>
+                <a class="logoutlogo" href="/logout/">logout</a>
+                {% endif %}
+                </div>
+            </span>
         </nav>
     </header>
-    <section>
 
-    </section>
-    <footer>
+    {% block body %}
+    {% endblock %}
 
-    </footer>
+
 </body>
+
+    {% block pagination %}
+    {% endblock %}
+
+    <footer>
+        <div class="footer">
+        <div><a href="https://www.flaticon.com/free-icons/parrot" title="parrot icons">Parrot icons created by kosonicon - Flaticon</a></div>
+        <div><a href="https://www.flaticon.com/free-icons/chill" title="chill icons">Chill icons created by Freepik - Flaticon</a></div>
+        </div>
+    </footer>
 </html>
