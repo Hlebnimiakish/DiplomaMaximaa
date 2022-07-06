@@ -52,7 +52,7 @@ class RegistrationView(View):
 
     def post(self, request):
         try:
-            TSUser.objects.get(email=request.POST['username'])
+            TSUser.objects.get(email=request.POST['email'])
             messages.error(request, 'Error: This email is already registred')
             return redirect('registrationpage')
         except ObjectDoesNotExist:
