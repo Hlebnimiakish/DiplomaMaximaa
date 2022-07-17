@@ -5,7 +5,8 @@ from django.contrib.auth.models import AbstractUser
 
 class TSUser(AbstractUser):
     email = models.EmailField(max_length=254, blank=False, unique=True)
-
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     def __str__(self):
         return self.username
 

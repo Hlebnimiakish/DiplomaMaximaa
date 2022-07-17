@@ -25,7 +25,20 @@ header {
     background-color: #4CAF50;
     border: 2px solid black;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 43px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.loginbuttonH {
+    box-sizing: border-box;
+    background-color: #4CAF50;
+    border: 2px solid black;
+    color: white;
+    padding: 15px 51.5px;
     border-radius: 8px;
     text-align: center;
     text-decoration: none;
@@ -38,7 +51,7 @@ header {
     background-color: #4CAF50;
     border: 2px solid black;
     color: white;
-    padding: 15px 32px;
+    padding: 17px 32px;
     border-radius: 8px;
     text-align: center;
     text-decoration: none;

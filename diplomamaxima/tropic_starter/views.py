@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from tropic_starter.forms import RegisterForm, AddPostForm, LoginForm, AddCommentForm
 from tropic_starter.models import Post, Comment, TSUser
 from django.core.exceptions import ObjectDoesNotExist
@@ -32,14 +32,13 @@ class LoginView(View):
             return redirect('homepage')
 
     def post(self, request):
-        email = request.POST['email']
-        password = request.POST['password']
-        try:
-            user = TSUser.objects.get(email=email, password=password)
+        user = authenticate(email=request.POST['email'],
+                            password=request.POST['password'])
+        if user is not None:
             login(request, user)
             messages.success(request, 'Logged in successfully')
             return redirect(request.GET.get('next') or f'/userpage/{user.id}')
-        except ObjectDoesNotExist:
+        else:
             messages.error(request, 'No such user. Please check the data given')
             return redirect('loginpage')
 
@@ -58,8 +57,11 @@ class RegistrationView(View):
         except ObjectDoesNotExist:
             regform = RegisterForm(request.POST)
             if regform.is_valid():
-                regform.save()
-                user = TSUser.objects.get(email=request.POST['email'], password=request.POST['password'])
+                user = TSUser.objects.create_user(username=request.POST['username'],
+                                                  email=request.POST['email'],
+                                                  password=request.POST['password'],
+                                                  first_name=request.POST['first_name'],
+                                                  last_name=request.POST['last_name'])
                 login(request, user)
                 messages.success(request, "U've been registred successfully")
                 return redirect('homepage')
@@ -126,24 +128,6 @@ class ThePostPage_WithCommView(View):
             messages.error(request, "U have to be logged in!")
             return redirect('loginpage')
 
-
-# class AddCommentView(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     def get(self, request):
-#         commentform = AddCommentForm()
-#         return render(request, 'thepost.html', {'commentform': commentform})
-#     def post(self, request):
-#         commentform = AddCommentForm(request.POST)
-#         if commentform.is_valid():
-#             Comment.objects.create(
-#                 post = Post.objects.get(id=request.POST[Post.pk]),
-#                 author = TSUser.objects.get(id=request.user.id),
-#                 content = request.POST['content']
-#             )
-#             return redirect(f'/post/{request.POST[Post.pk]}')
-#         else:
-#             messages.error(request, "Something went wrong")
-#             return redirect(f'/post/{request.POST[Post.pk]}')
 
 
 

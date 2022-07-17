@@ -12,7 +12,13 @@
 <section class="homepagebutts">
         <div><a href="/addpost/"><button class="addpostbutton">Add a post!</button></a></div>
     <br>
+    <br>
+    <br>
         <div><a href="/registration/"><button class="regbuttonH">Register</button></a></div>
+    <br>
+        {% if user.id == null %}
+            <div><a href="/login/"><button class="loginbuttonH">Log in</button></a></div>
+        {% endif %}
 </section>
 
 <section>
