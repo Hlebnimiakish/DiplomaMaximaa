@@ -6,8 +6,12 @@
 
 
 {% block body %}
+<section class="homepagebutts">
+        <div><a href="/addpost/"><button class="addpostbutton">Add a post!</button></a></div>
+</section>
 
 <section>
+    <h1 class="srchres">Page of {{ user.username }}</h1>
     {% for post in userpostspage %}
     <div class="wholepost">
         <div class="posttitle"><a class="posttitle" href="/post/{{ post.id }}">{{ post.title }}</a></div>
