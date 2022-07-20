@@ -14,6 +14,7 @@ class TSUser(AbstractUser):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
+    post_pic = models.ImageField(blank=True, null=True, upload_to='postspics/')
     datetime = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(TSUser, on_delete=models.CASCADE, parent_link=True, null=False)
 

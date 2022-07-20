@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    <form class="addpostform" action="" method="post">
+    <form class="addpostform" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {{ form.media }}
         <input class="submitpostbutton" type="submit" value="Submit the post!">
     </form>
 {% endblock %}

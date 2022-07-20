@@ -25,6 +25,12 @@
     <header>
         <nav>
             <span><a href="/"><img class="logo" src="{% static 'pics/logo2.png' %}"></a></span>
+
+            <form class="srch" action="{% url 'search' %}" method="GET">
+            <input class="srchlogo" type="image" src="{% static 'pics/searchlogo.png' %}" alt="submit">
+            <input class="srchfield" name="searchdata" id="searchdata" type="search">
+            </form>
+
             <span class="iconwithcont">
                 <img class="usericon" src="{% static 'pics/sunbathing.png' %}">
                 <div class="usericoncont">
@@ -52,6 +58,7 @@
         <div class="footer">
         <div><a href="https://www.flaticon.com/free-icons/parrot" title="parrot icons">Parrot icons created by kosonicon - Flaticon</a></div>
         <div><a href="https://www.flaticon.com/free-icons/chill" title="chill icons">Chill icons created by Freepik - Flaticon</a></div>
+        <div><a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Freepik - Flaticon</a></div>
         </div>
     </footer>
 </html>

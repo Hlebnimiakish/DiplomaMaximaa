@@ -12,7 +12,7 @@ from django.contrib import messages
 class HomepageView(View):
     def get(self, request):
         posts = Post.objects.order_by('-datetime')
-        postspage = Paginator(posts, 10)
+        postspage = Paginator(posts, 7)
         pgnum = request.GET.get('pgnum')
         if pgnum is None:
             postspage = postspage.get_page(1)
@@ -33,7 +33,8 @@ class LoginView(View):
 
     def post(self, request):
         user = authenticate(email=request.POST['email'],
-                            password=request.POST['password'])
+                            password=request.POST['password'],
+                            )
         if user is not None:
             login(request, user)
             messages.success(request, 'Logged in successfully')
@@ -61,7 +62,8 @@ class RegistrationView(View):
                                                   email=request.POST['email'],
                                                   password=request.POST['password'],
                                                   first_name=request.POST['first_name'],
-                                                  last_name=request.POST['last_name'])
+                                                  last_name=request.POST['last_name'],
+                                                  )
                 login(request, user)
                 messages.success(request, "U've been registred successfully")
                 return redirect('homepage')
@@ -93,7 +95,8 @@ class AddPostView(LoginRequiredMixin, View):
             postcr = Post.objects.create(
                 title=request.POST['title'],
                 content=request.POST['content'],
-                author=TSUser.objects.get(id=request.user.id)
+                author=TSUser.objects.get(id=request.user.id),
+                post_pic=request.FILES.get('post_pic', None),
                 )
             messages.success(request, "Post have been added")
             return redirect(f'/post/{postcr.id}')
@@ -118,7 +121,7 @@ class ThePostPage_WithCommView(View):
                 Comment.objects.create(
                     post=Post.objects.get(id=id),
                     author=TSUser.objects.get(id=request.user.id),
-                    content=request.POST['content']
+                    content=request.POST['content'],
                 )
                 return redirect(f'/post/{id}')
             else:
@@ -145,4 +148,19 @@ class UserPageView(View):
             return render(request, 'userpageposts.html', {'userpostspage': userpostspage, 'user': user})
 
 
+class SearchResultsView(View):
+    def get(self, request):
+        srchdata = self.request.GET.get('searchdata')
+        if srchdata:
+            posts = Post.objects.filter(title__icontains=srchdata).order_by('-datetime')
+            postspage = Paginator(posts, 7)
+            pgnum = request.GET.get('pgnum')
+            if pgnum is None:
+                postspage = postspage.get_page(1)
+                return render(request, 'searchresults.html', {'postspage': postspage, 'srchdata': srchdata})
+            else:
+                postspage = postspage.get_page(pgnum)
+                return render(request, 'searchresults.html', {'postspage': postspage, 'srchdata': srchdata})
+        else:
+            return redirect('homepage')
 

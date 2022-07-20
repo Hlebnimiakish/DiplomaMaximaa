@@ -26,6 +26,7 @@ class AddPostForm(ModelForm):
         fields = [
             'title',
             'content',
+            'post_pic',
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'txtinlil', 'placeholder': 'Title'}),

@@ -7,7 +7,10 @@
 {% block body %}
     <section>
         <div class="wholepost">
-            <div class="posttitle"><a href="/post/{{ thepost.id }}">{{ thepost.title }}</a></div>
+            <div class="posttitle"><a class="posttitle" href="/post/{{ thepost.id }}">{{ thepost.title }}</a></div>
+            {% if thepost.post_pic %}
+                <img class="postpic" src="{{ thepost.post_pic.url }}">
+            {% endif %}
             <div class="postcontent">{{ thepost.content }}</div>
             <div class="postauthor">Post from: <a href="/userpage/{{ thepost.author.id }}">{{ thepost.author}}</a></div>
             <div class="postdatetime">Posted on: {{ thepost.datetime }}</div>

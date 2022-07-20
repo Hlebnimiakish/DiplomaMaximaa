@@ -25,11 +25,12 @@
     {% for post in postspage %}
         <div class="wholepost">
             <div class="posttitle"><a class="posttitle" href="/post/{{ post.id }}">{{ post.title }}</a></div>
+            {% if post.post_pic %}
+                <img class="postpic" src="{{ post.post_pic.url }}">
+            {% endif %}
             <div class="postcontent">{{ post.content}}</div>
             <div class="postauthor">Post from: <a href="/userpage/{{ post.author.id }}">{{ post.author}}</a></div>
             <div class="postdatetime">Posted on: {{ post.datetime}}</div>
-            <hr>
-            <br>
         </div>
     {% endfor %}
 </section>
